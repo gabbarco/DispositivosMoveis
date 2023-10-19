@@ -27,3 +27,32 @@ body {
   padding: 1em;
   margin-top: 1em;
 }
+
+.filme {
+  display: flex;
+  margin: 1em;
+  padding: 1em;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+
+.filme .poster {
+  flex: 0 0 200px;
+}
+
+.filme .conteudo {
+  flex-grow: 1;
+  padding-left: 1em;
+}
+
+.filme h3 {
+  margin: 0;
+}
+
+.filme .generos {
+  font-size: 80%;
+}
+
+.fav {
+  background-color: rgb(251,207,207);
+}
