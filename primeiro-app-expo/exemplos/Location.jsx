@@ -30,19 +30,25 @@ const capitais = [
     { id: 24, name: 'São Paulo', description: 'Capital de São Paulo', latitude: -23.5505, longitude: -46.6333 },
     { id: 25, name: 'Aracaju', description: 'Capital de Sergipe', latitude: -10.9472, longitude: -37.0731 },
     { id: 26, name: 'Palmas', description: 'Capital de Tocantins', latitude: -10.1848, longitude: -48.3337 },
+    { id: 27, name: 'Riolândia', description: 'Capital do Mundo', latitude: -19.9816, longitude: -49.6797}
 ];
 
 export default function ExemploLocation() {
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
 
-    const [radius, setRadius] = useState(0.1); // Valor padrão do raio de busca
+    const [radius, setRadius] = useState(0.1);
     const [userRadius, setUserRadius] = useState('');
 
     const [nearbyCAPs, setNearbyCAPs] = useState([]);
 
     useEffect(() => {
         (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                setErrorMsg('Permissão para acessar a localização foi negada');
+                return;
+            }
             // Peganod a localização a cada 1 segundos
             setInterval(async () => {
                 let _location = await Location.getCurrentPositionAsync({});
@@ -80,7 +86,6 @@ export default function ExemploLocation() {
     const handleSearch = () => {
         setUserRadius(userRadius.trim());
         (async () => {
-            // Peganod a localização a cada 1 segundos
             let _location = await Location.getCurrentPositionAsync({});
             setLocation(_location);
             if (userRadius) {
@@ -110,13 +115,12 @@ export default function ExemploLocation() {
                 onChangeText={(text) => setUserRadius(text)}
                 placeholder="Informe o raio"
             />
-            <Button title="Buscar" onPress={handleSearch} />
+            <Button color="black" title="Buscar" onPress={handleSearch} />
 
             <Text style={styles.sectionHeader}>Capitais do Brasil mais próximas:</Text>
             <FlatList
                 data={nearbyCAPs}
                 keyExtractor={(item) => item.id.toString()}
-                numColumns={3}
                 renderItem={({ item }) => (
                     <TouchableOpacity style={styles.capItem}>
                         <Text style={styles.capName}>{item.name}</Text>
@@ -134,19 +138,29 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         padding: 20,
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+        width: 'auto',
     },
     paragraph: {
         fontSize: 18,
         textAlign: 'center',
+        color: 'white',
+        textShadowColor: 'black',
+        textShadowOffset: { width: 0, height: 0 },
+        textShadowRadius: 10,
     },
     sectionHeader: {
         fontSize: 20,
         fontWeight: 'bold',
         marginTop: 20,
+        color: 'black',
+        textShadowColor: 'white',
+        textShadowOffset: { width: 0, height: 0 },
+        textShadowRadius: 3,
     },
     radiusInput: {
         height: 40,
-        borderColor: 'gray',
+        borderColor: 'black',
         borderWidth: 1,
         width: 200,
         padding: 8,
