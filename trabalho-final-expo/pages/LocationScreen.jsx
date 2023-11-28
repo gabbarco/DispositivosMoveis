@@ -36,9 +36,10 @@ const LocationScreen = () => {
     return (
         <View style={styles.container}>
             {location ? (
-                <>
+                <><TouchableOpacity style={styles.containerLocs}>
                     <Text style={styles.text}>Latitude: {location.latitude}</Text>
                     <Text style={styles.text}>Longitude: {location.longitude}</Text>
+                </TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={getWeatherForLocation}>
                         <Text style={styles.buttonText}>Obter Previsão do Tempo</Text>
                     </TouchableOpacity>
@@ -56,6 +57,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#f8f8f8',
+    },
+    containerLocs: {
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        borderRadius: 8,
+        elevation: 10,
+        padding: 15,
     },
     text: {
         fontSize: 18,

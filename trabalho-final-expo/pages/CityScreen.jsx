@@ -70,7 +70,7 @@ const CityScreen = ({ route }) => {
                         style={styles.weatherIcon}
                     />
                     <ScrollView
-                        vertincal
+                        vertical
                         contentContainerStyle={styles.forecastContainer}
                         showsVerticalScrollIndicator={true}
                     >
