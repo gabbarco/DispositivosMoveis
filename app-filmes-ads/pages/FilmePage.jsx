@@ -5,8 +5,6 @@ export default function FilmePage({ route, navigation }) {
   let filme = route.params.filme;
   let cast = route.params.filme.credits.cast;
 
-  console.log(filme)
-
   const formatarData = (dataString) => {
     const data = new Date(dataString);
     const dia = data.getDate().toString().padStart(2, "0");

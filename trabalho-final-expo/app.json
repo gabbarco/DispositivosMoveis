@@ -1,8 +1,11 @@
 {
   "expo": {
-    "name": "primeiro-app-expo",
-    "permissions": ["CAMERA", "LOCATION"],
-    "slug": "primeiro-app-expo",
+    "name": "trabalho-final-app",
+    "permissions": [
+      "CAMERA",
+      "LOCATION"
+    ],
+    "slug": "trabalho-final-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
