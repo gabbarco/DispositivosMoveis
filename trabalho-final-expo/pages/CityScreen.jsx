@@ -1,13 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Share } from 'react-native';
 import { saveCityToHistory } from '../components/storage';
+import { getTheme, setTheme } from '../components/storage';
 
 const CityScreen = ({ route }) => {
-
     const { cityName, latitude, longitude } = route.params;
-
     const [weatherData, setWeatherData] = useState(null);
     const [selectedDay, setSelectedDay] = useState(null);
+    const [theme, setAppTheme] = useState('light');
+
+    useEffect(() => {
+        getTheme().then((storedTheme) => {
+            setAppTheme(storedTheme);
+        });
+    }, []);
+
+    const toggleTheme = () => {
+        const newTheme = theme === 'light' ? 'dark' : 'light';
+        setAppTheme(newTheme);
+        setTheme(theme === 'light' ? 'dark' : 'light');
+    };
 
     useEffect(() => {
         const fetchWeatherData = async () => {
@@ -55,10 +67,88 @@ const CityScreen = ({ route }) => {
         }
     };
 
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            padding: 10,
+            backgroundColor: theme === 'light' ? '#f8f8f8' : '#333',
+            color: theme === 'light' ? '#000' : '#fff',
+        },
+        shareButton: {
+            position: 'absolute',
+            top: 16,
+            right: 16,
+            padding: 10,
+            borderRadius: 5,
+            backgroundColor: '#4CAF50',
+        },
+        shareButtonText: {
+            color: 'white',
+            fontWeight: 'bold',
+        },
+        themeButton: {
+            position: 'absolute',
+            top: 16,
+            right: 300,
+            padding: 10,
+            borderRadius: 5,
+            backgroundColor: '#4CAF50',
+        },
+        cityName: {
+            fontSize: 24,
+            fontWeight: 'bold',
+            marginBottom: 10,
+            textAlign: 'center',
+            color: theme === 'light' ? '#000' : '#fff',
+        },
+        temperature: {
+            fontSize: 36,
+            fontWeight: 'bold',
+            marginBottom: 10,
+            textAlign: 'center',
+            color: theme === 'light' ? '#333' : '#fff',
+        },
+        description: {
+            fontSize: 18,
+            marginBottom: 20,
+            textAlign: 'center',
+            color: theme === 'light' ? '#555' : '#fff',
+        },
+        weatherIcon: {
+            width: 100,
+            height: 100,
+            marginLeft: 140,
+        },
+        forecastContainer: {
+            flexDirection: 'column',
+            justifyContent: 'space-around',
+            width: '100%',
+        },
+        forecastDay: {
+            alignItems: 'center',
+            backgroundColor: theme === 'light' ? '#fff' : '#333',
+            borderRadius: 8,
+            marginHorizontal: 5,
+            elevation: 10,
+        },
+        forecastDayText: {
+            fontSize: 14,
+            color: theme === 'light' ? '#444' : '#fff',
+            marginBottom: 5,
+        },
+        loadingText: {
+            fontSize: 14,
+            color: theme === 'light' ? '#444' : '#fff',
+        }
+    });
+
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.shareButton} onPress={shareWeather}>
                 <Text style={styles.shareButtonText}>🔗</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.themeButton} onPress={toggleTheme}>
+                <Text style={styles.shareButtonText}>🌓</Text>
             </TouchableOpacity>
             {weatherData ? (
                 <>
@@ -89,71 +179,10 @@ const CityScreen = ({ route }) => {
                     </ScrollView>
                 </>
             ) : (
-                <Text>Carregando...</Text>
+                <Text style={styles.loadingText}>Carregando...</Text>
             )}
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 10,
-        backgroundColor: '#f8f8f8',
-    },
-    shareButton: {
-        position: 'absolute',
-        top: 16,
-        right: 16,
-        padding: 10,
-        borderRadius: 5,
-        backgroundColor: '#4CAF50',
-    },
-    shareButtonText: {
-        color: 'white',
-        fontWeight: 'bold',
-    },
-    cityName: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 10,
-        textAlign: 'center',
-    },
-    temperature: {
-        fontSize: 36,
-        fontWeight: 'bold',
-        marginBottom: 10,
-        textAlign: 'center',
-        color: '#333',
-    },
-    description: {
-        fontSize: 18,
-        marginBottom: 20,
-        textAlign: 'center',
-        color: '#555',
-    },
-    weatherIcon: {
-        width: 100,
-        height: 100,
-        marginLeft: 140,
-    },
-    forecastContainer: {
-        flexDirection: 'column',
-        justifyContent: 'space-around',
-        width: '100%',
-    },
-    forecastDay: {
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        borderRadius: 8,
-        marginHorizontal: 5,
-        elevation: 10,
-    },
-    forecastDayText: {
-        fontSize: 14,
-        color: '#444',
-        marginBottom: 5,
-    },
-});
 
 export default CityScreen;
